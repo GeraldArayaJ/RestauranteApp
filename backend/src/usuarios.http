@@ -1,0 +1,78 @@
+### Registro de admin
+POST http://localhost:4000/api/users/register
+Content-Type: application/json
+
+{
+  "nombre": "Gerald",
+  "correo": "gerald@email.com",
+  "password": "1234",
+  "rol": "admin"
+}
+
+### Registro de salonero
+POST http://localhost:4000/api/users/register
+Content-Type: application/json
+
+{
+  "nombre": "Ana",
+  "correo": "ana@email.com",
+  "password": "123456",
+  "rol": "salonero"
+}
+###login admin
+POST http://localhost:4000/api/users/login
+Content-Type: application/json
+
+{
+  "correo": "gerald@email.com",
+  "password": "1234"
+}
+###login salonero
+POST http://localhost:4000/api/users/login
+Content-Type: application/json
+
+{
+  "correo": "ana@email.com",
+  "password": "123456"
+}
+### Crear Plato (Admin)
+POST http://localhost:4000/api/platos
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sIjoiYWRtaW4iLCJpYXQiOjE3NjAzMDQ4MDQsImV4cCI6MTc2MDMzMzYwNH0.xfuWzWnYNXWJASIizi88wZn_nI42C_oFi8nvd-zdf98
+Content-Type: application/json
+
+{
+  "nombre": "Hamburguesa",
+  "precio": 5.50,
+  "categoria": "comida"
+}
+
+### Crear Orden (Salonero)
+POST http://localhost:4000/api/ordenes
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Miwicm9sIjoic2Fsb25lcm8iLCJpYXQiOjE3NjAzMDQ5MTQsImV4cCI6MTc2MDMzMzcxNH0.2dSewnmER89Ud_hrxiD7CJBX1TTTDfbwaXz5vtE8ras
+Content-Type: application/json
+
+{
+  "items": [
+    { "platoId": 1, "cantidad": 2 }
+  ]
+}
+
+### Obtener Ordenes (admin)
+GET http://localhost:4000/api/ordenes
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sIjoiYWRtaW4iLCJpYXQiOjE3NjAzMDQ4MDQsImV4cCI6MTc2MDMzMzYwNH0.xfuWzWnYNXWJASIizi88wZn_nI42C_oFi8nvd-zdf98
+
+### obtener Ordenes (salonero)
+GET http://localhost:4000/api/ordenes
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Miwicm9sIjoic2Fsb25lcm8iLCJpYXQiOjE3NjAzMDQ5MTQsImV4cCI6MTc2MDMzMzcxNH0.2dSewnmER89Ud_hrxiD7CJBX1TTTDfbwaXz5vtE8ras
+Start-Process -FilePath node -ArgumentList 'C:\Users\geral\restaurante-app\backend\src\index.js' -NoNewWindow ; Start-Sleep -Seconds 1 ; netstat -ano | findstr 4000
+
+GET http://localhost:4000/api/mesas
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sIjoiYWRtaW4iLCJpYXQiOjE3NjAzMDQ4MDQsImV4cCI6MTc2MDMzMzYwNH0.xfuWzWnYNXWJASIizi88wZn_nI42C_oFi8nvd-zdf98
+### Crear Mesa (Admin)
+POST http://localhost:4000/api/mesas
+Authorization:  Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sIjoiYWRtaW4iLCJpYXQiOjE3NjAzMDQ4MDQsImV4cCI6MTc2MDMzMzYwNH0.xfuWzWnYNXWJASIizi88wZn_nI42C_oFi8nvd-zdf98
+Content-Type: application/json
+
+{
+  "nombre": "Mesa 1"
+}

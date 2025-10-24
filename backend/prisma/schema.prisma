@@ -1,0 +1,70 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Usuario {
+  id        Int      @id @default(autoincrement())
+  nombre    String
+  correo    String   @unique
+  password  String
+  rol       String   // "admin", "salonero" o "recepcionista"
+  ordenes   Orden[]
+}
+
+model Plato {
+  id        Int      @id @default(autoincrement())
+  nombre    String
+  precio    Float
+  categoria String   // ejemplo: "comida" o "bebida"
+  estado    String   @default("disponible") // "disponible" o "agotado"
+  ordenes   OrdenItem[]
+}
+
+model Mesa {
+  id      Int     @id @default(autoincrement())
+  nombre  String
+  estado  String  @default("libre") // libre, ocupado
+  ordenes Orden[]
+}
+
+
+model Orden {
+  id         Int         @id @default(autoincrement())
+  usuario    Usuario     @relation(fields: [usuarioId], references: [id])
+  usuarioId  Int
+  fecha      DateTime    @default(now())
+  items      OrdenItem[]
+  total      Float
+  iva        Float   @default(0)
+  servicio   Float   @default(0)
+  montoFinal Float   @default(0)
+  estado     String      @default("pendiente") // "pendiente", "entregada", "pagada"
+  tipoPago   String?     // efectivo, tarjeta, QR (solo al pagar)
+  mesaId     Int?
+  mesa       Mesa?       @relation(fields: [mesaId], references: [id])
+  pagos      PagoOrden[]
+}
+
+model PagoOrden {
+  id        Int      @id @default(autoincrement())
+  orden     Orden    @relation(fields: [ordenId], references: [id])
+  ordenId   Int
+  monto     Float
+  tipoPago  String
+  fecha     DateTime @default(now())
+}
+
+model OrdenItem {
+  id        Int      @id @default(autoincrement())
+  orden     Orden    @relation(fields: [ordenId], references: [id])
+  ordenId   Int
+  plato     Plato    @relation(fields: [platoId], references: [id])
+  platoId   Int
+  cantidad  Int
+  detalles  String?
+}

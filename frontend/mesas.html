@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="es">
+
+<head>
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+  <meta charset="utf-8" />
+  <script src="https://cdn.socket.io/4.8.1/socket.io.min.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Selecciona una mesa</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <!-- Estilos movidos a style.css -->
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm mb-4">
+    <div class="container-fluid justify-content-end">
+      <a href="login.html" class="btn btn-outline-primary"><i class="bi bi-box-arrow-in-right me-1"></i>Ir al Login</a>
+    </div>
+  </nav>
+  <main class="container py-4">
+    <h1 class="display-6 fw-bold text-center mb-4">Selecciona tu mesa</h1>
+    <div id="mesas"></div>
+  </main>
+  <script type="module" src="js/mesas.js"></script>
+</body>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+</html>

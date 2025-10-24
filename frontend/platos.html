@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Gestión de Platos</title>
+   <link rel="stylesheet" href="css/userbar.css" />
+
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  
+  <style>
+    /* Ajustes para evitar colisión con el navbar */
+    body {
+      padding-top: 70px; /* Espacio para la barra superior */
+    }
+    
+    /* Si tienes un sidebar fijo, agrega esto también */
+    @media (min-width: 768px) {
+      body {
+        padding-left: 250px; /* Ajusta según el ancho de tu sidebar */
+      }
+    }
+  </style>
+</head>
+
+<body>
+    <!-- Barra superior del usuario -->
+    <div id="userInfoBar"></div>
+
+    <!-- Navbar Bootstrap dinámica -->
+    <nav id="mainNav"></nav>
+
+    <!-- Script que construye el navbar -->
+    <script type="module" src="js/userbar.js"></script>
+
+    <!-- ======== CONTENIDO PRINCIPAL ======== -->
+    <div class="content-area">
+        <!-- Header -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1 class="h2 fw-bold text-primary">Gestión de Platos</h1>
+            <div id="userInfo" class="text-muted"></div>
+        </div>
+
+        <!-- Botón y filtro -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <button id="nuevoPlatoBtn" class="btn btn-primary">
+                <i class="bi bi-plus-circle me-2"></i>Nuevo plato
+            </button>
+            <div class="col-md-3">
+                <div class="input-group">
+                    <span class="input-group-text"><i class="bi bi-search"></i></span>
+                    <input id="filtroNombrePlato" type="text" class="form-control" placeholder="Filtrar por nombre...">
+                </div>
+            </div>
+        </div>
+
+        <!-- Tabla de platos -->
+        <div class="card shadow-sm">
+            <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
+                <h3 class="h5 mb-0">Lista de Platos</h3>
+                <span class="badge bg-primary" id="totalPlatos">0 platos</span>
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover mb-0">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nombre</th>
+                                <th>Precio</th>
+                                <th>Categoría</th>
+                                <th>Estado</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="listaPlatos">
+                            <!-- Los platos se cargarán aquí dinámicamente -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Paginación -->
+        <div id="paginacionPlatos" class="d-flex justify-content-center mt-4"></div>
+    </div>
+
+    <!-- Modal para crear/editar plato -->
+    <div class="modal fade" id="platoModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="platoModalTitle">Nuevo plato</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="formPlato">
+                        <input type="hidden" id="platoId">
+                        <div class="mb-3">
+                            <label for="nombrePlato" class="form-label">Nombre</label>
+                            <input type="text" class="form-control" id="nombrePlato" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="precioPlato" class="form-label">Precio</label>
+                            <div class="input-group">
+                                <span class="input-group-text">$</span>
+                                <input type="number" class="form-control" id="precioPlato" step="0.01" min="0" required>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="categoriaPlato" class="form-label">Categoría</label>
+                            <input type="text" class="form-control" id="categoriaPlato" required placeholder="Escribe la categoría">
+                        </div>
+                        <div class="mb-3">
+                            <label for="estadoPlato" class="form-label">Estado</label>
+                            <select class="form-select" id="estadoPlato" required>
+                                <option value="disponible">Disponible</option>
+                                <option value="agotado">Agotado</option>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" form="formPlato" class="btn btn-primary">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para eliminar plato -->
+    <div class="modal fade" id="deletePlatoModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Eliminar plato</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p id="deletePlatoText">¿Seguro que quieres eliminar este plato?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button id="confirmDeletePlato" class="btn btn-danger">Eliminar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script type="module" src="js/platos.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,2 @@
+/* SheetJS CDN para exportar a Excel .xlsx */
+// https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js

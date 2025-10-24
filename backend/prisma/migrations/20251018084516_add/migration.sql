@@ -1,0 +1,13 @@
+-- CreateTable
+CREATE TABLE `PagoOrden` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `ordenId` INTEGER NOT NULL,
+    `monto` DOUBLE NOT NULL,
+    `tipoPago` VARCHAR(191) NOT NULL,
+    `fecha` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- AddForeignKey
+ALTER TABLE `PagoOrden` ADD CONSTRAINT `PagoOrden_ordenId_fkey` FOREIGN KEY (`ordenId`) REFERENCES `Orden`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;

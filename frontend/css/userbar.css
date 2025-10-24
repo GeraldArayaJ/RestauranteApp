@@ -1,0 +1,101 @@
+/* GENERAL */
+body {
+  font-family: 'Inter', sans-serif;
+  background: #f5f6fa;
+  margin: 0;
+}
+
+/* TOPBAR */
+.topbar {
+  background: linear-gradient(90deg, #0f172a, #1e293b);
+  color: #fff;
+  height: 56px;
+  z-index: 1050;
+}
+.avatar {
+  width: 40px;
+  height: 40px;
+  background: linear-gradient(135deg, #06b6d4, #3b82f6);
+}
+
+/* SIDEBAR */
+.sidebar {
+  width: 230px;
+  background: #111827;
+  color: #e5e7eb;
+  transition: all 0.3s ease;
+  top: 56px; /* Debajo del topbar */
+  left: 0;
+  padding-top: 1rem;
+  z-index: 1040;
+}
+.sidebar-link {
+  transition: all 0.2s ease;
+}
+.sidebar-link:hover, .sidebar-link.active {
+  background: linear-gradient(135deg, #3b82f6, #06b6d4);
+  color: white !important;
+  transform: translateX(4px);
+}
+.sidebar .nav-link i {
+  font-size: 1.2rem;
+}
+
+/* CONTENIDO */
+.ms-sidebar {
+  margin-left: 230px;
+  padding-top: 72px; /* Altura topbar + padding */
+  transition: all 0.3s ease;
+}
+
+/* RESPONSIVE */
+@media (max-width: 992px) {
+  .sidebar {
+    left: -230px;
+    top: 56px;
+  }
+  .sidebar.active {
+    left: 0;
+  }
+  .ms-sidebar {
+    margin-left: 0;
+  }
+}
+
+/* Mobile: overlay when sidebar is open */
+.sidebar-overlay {
+  display: none;
+  position: fixed;
+  top: 56px; /* debajo de la topbar */
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,0.45);
+  z-index: 1035; /* debajo de la sidebar (1040) y topbar (1050) */
+  transition: opacity 0.2s ease;
+}
+.sidebar-overlay.active {
+  display: block;
+  opacity: 1;
+}
+
+/* Toggle button (hamburger) visible only on small screens */
+.sidebar-toggle {
+  background: transparent;
+  border: none;
+  color: #fff;
+  font-size: 1.35rem;
+  display: none; /* visible vía media query */
+}
+@media (max-width: 992px) {
+  .sidebar-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    margin-right: 0.5rem;
+  }
+  /* Ensure topbar content doesn't overflow */
+  .topbar .d-flex.align-items-center.gap-3 { flex: 1 1 auto; }
+}

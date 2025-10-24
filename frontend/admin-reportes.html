@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Admin - Reportes de Pagos y Órdenes</title>
+    <link rel="stylesheet" href="css/userbar.css" />
+    
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <!-- SheetJS -->
+    <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
+    
+    <style>
+        :root {
+            --sidebar-width: 250px;
+            --topbar-height: 70px;
+        }
+        
+        body {
+            background-color: #f8f9fa;
+            padding-top: var(--topbar-height);
+        }
+        
+        .content-area {
+            margin-left: var(--sidebar-width);
+            padding: 2rem;
+        }
+        
+        .btn-primary {
+            background-color: #3a7bd5;
+            border-color: #3a7bd5;
+        }
+        
+        .btn-primary:hover {
+            background-color: #2d68b3;
+            border-color: #2d68b3;
+        }
+        
+        .table th {
+            background-color: #343a40;
+            color: white;
+        }
+        
+        .badge-estado {
+            font-size: 0.8em;
+        }
+        
+        .badge-pendiente {
+            background-color: #ffc107;
+            color: #000;
+        }
+        
+        .badge-completada {
+            background-color: #198754;
+        }
+        
+        .badge-pagada {
+            background-color: #198754;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .content-area {
+                margin-left: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Barra superior del usuario -->
+    <div id="userInfoBar"></div>
+
+    <!-- Navbar Bootstrap dinámica -->
+    <nav id="mainNav"></nav>
+
+    <!-- Script que construye el navbar -->
+    <script type="module" src="js/userbar.js"></script>
+
+    <!-- ======== CONTENIDO PRINCIPAL ======== -->
+    <div class="content-area">
+        <!-- Header -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1 class="h2 fw-bold text-primary">Reportes de Pagos y Órdenes</h1>
+        </div>
+
+        <!-- Sección de Pagos -->
+        <section class="card shadow-sm mb-5">
+            <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
+                <h2 class="h5 mb-0">Tabla de Pagos de Órdenes</h2>
+                <span class="badge bg-primary" id="totalPagos">0 pagos</span>
+            </div>
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <div class="col-md-4">
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="bi bi-search"></i></span>
+                            <input type="text" id="filtroPagos" class="form-control" placeholder="Filtrar pagos...">
+                        </div>
+                    </div>
+                    <div class="d-flex gap-2">
+                        <button id="descargarPagosPDF" class="btn btn-outline-danger">
+                            <i class="bi bi-file-earmark-pdf me-1"></i>PDF
+                        </button>
+                        <button id="descargarPagosExcel" class="btn btn-outline-success">
+                            <i class="bi bi-file-earmark-excel me-1"></i>Excel
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="table-responsive">
+                    <table id="tablaPagos" class="table table-striped table-hover align-middle">
+                        <thead>
+                            <tr>
+                                <th>ID Pago</th>
+                                <th>ID Orden</th>
+                                <th>Monto</th>
+                                <th>Tipo de Pago</th>
+                                <th>Fecha</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Los pagos se cargarán aquí dinámicamente -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sección de Órdenes -->
+        <section class="card shadow-sm">
+            <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
+                <h2 class="h5 mb-0">Tabla de Órdenes</h2>
+                <span class="badge bg-primary" id="totalOrdenes">0 órdenes</span>
+            </div>
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <div class="col-md-4">
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="bi bi-search"></i></span>
+                            <input type="text" id="filtroOrdenes" class="form-control" placeholder="Filtrar órdenes...">
+                        </div>
+                    </div>
+                    <div class="d-flex gap-2">
+                        <button id="descargarOrdenesPDF" class="btn btn-outline-danger">
+                            <i class="bi bi-file-earmark-pdf me-1"></i>PDF
+                        </button>
+                        <button id="descargarOrdenesExcel" class="btn btn-outline-success">
+                            <i class="bi bi-file-earmark-excel me-1"></i>Excel
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="table-responsive">
+                    <table id="tablaOrdenes" class="table table-striped table-hover align-middle">
+                        <thead>
+                            <tr>
+                                <th>ID Orden</th>
+                                <th>Usuario</th>
+                                <th>Mesa</th>
+                                <th>Total</th>
+                                <th>Estado</th>
+                                <th>Fecha</th>
+                                <th>Tipo de Pago</th>
+                                <th>IVA</th>
+                                <th>Servicio</th>
+                                <th>Monto Final</th>
+                                <th>Platos</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Las órdenes se cargarán aquí dinámicamente -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script type="module" src="js/admin-reportes.js"></script>
+</body>
+</html>

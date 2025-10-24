@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Panel Salonero</title>
+    <script src="https://cdn.socket.io/4.8.1/socket.io.min.js"></script>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <header class="page-header">
+        <div class="header-left">
+            <h1>Panel Salón / Pedido</h1>
+            <p class="muted">Toma pedidos, agrega detalles y envía al comedor.</p>
+        </div>
+        <nav>
+            <a href="mesas.html" class="btn btn-outline-secondary me-2"><i class="bi bi-grid-3x3-gap"></i> Mesas</a>
+            <a href="login.html" class="btn btn-outline-primary"><i class="bi bi-box-arrow-in-right"></i> Ir al Login</a>
+        </nav>
+        <div class="header-right">
+            <input id="searchInput" class="form-control" placeholder="Buscar plato..." />
+        </div>
+    </header>
+
+    <main class="menu-layout">
+        <section class="menu-section">
+            <h2 class="h4 mb-3">Menú</h2>
+            <div id="menuPlatos" class="menu-categorias-grid"></div>
+        </section>
+
+        <aside class="order-section" id="orden">
+            <h2 class="h4 mb-3">Orden actual</h2>
+            <ul id="ordenItems"></ul>
+            <div class="order-summary">
+                <div>Total: <strong>$<span id="ordenTotal">0.00</span></strong></div>
+                <div class="mt-2 d-flex gap-2">
+                    <button id="enviarOrden" class="btn btn-success"><i class="bi bi-send me-1"></i>Enviar Orden</button>
+                    <button id="clearOrden" class="btn btn-outline-secondary">Limpiar</button>
+                </div>
+            </div>
+        </aside>
+    </main>
+
+    <!-- Modal para crear/editar plato -->
+    <div id="platoModal" class="modal" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="platoModalTitle">Nuevo plato</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <form id="platoForm">
+                    <input id="platoId" type="hidden" />
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label class="form-label">Nombre</label>
+                            <input id="nombrePlato" class="form-control" required />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Precio</label>
+                            <input id="precioPlato" type="number" step="0.01" class="form-control" required />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Categoría</label>
+                            <input id="categoriaPlato" class="form-control" required />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Estado</label>
+                            <select id="estadoPlato" class="form-select" required>
+                                <option value="disponible">Disponible</option>
+                                <option value="agotado">Agotado</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Guardar</button>
+                        <button type="button" id="cancelPlato" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para detalles al agregar a la orden -->
+    <div id="detallesModal" class="modal" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="detallesModalTitle">Agregar detalles</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <form id="detallesForm">
+                    <input id="detallesPlatoId" type="hidden" />
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="detallesText" class="form-label">Detalles (opcional)</label>
+                            <textarea id="detallesText" rows="4" class="form-control"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Agregar</button>
+                        <button type="button" id="cancelDetalles" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="js/app.js"></script>
+</body>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+</html>
